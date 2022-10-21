@@ -1,111 +1,158 @@
+from enum import Enum
+
+import random
+
+import numpy as np
+
+
+class GridValues(Enum):
+    INITIAL_VALUE = 0
+
 class Grid:
-    #
-    # Variables
-    #
-    length: int
-    width: int
 
-    initial_element_value = 0
+    def __init__(self, length: int, width: int) -> None:
+        self._initial_value = GridValues.INITIAL_VALUE.value
+        self._is_initialized: bool
+        self._length = length
+        self._width = width
 
-    grid = []
-    is_initialized: bool
+        self.initialize(length, width)
 
-    #
-    # Functions
-    #
-    def __init__(self, length: int, width: int):
-        self.initializeGrid(length, width)
+    """
+    Property Getters / Setters
+    """
+    @property
+    def grid(self) -> np.ndarray:
+        return self._grid
 
-    def getGrid(self):
-        return self.grid
+    @grid.setter
+    def grid(self, grid: np.ndarray) -> None:
+        self._grid = grid
 
-    def getLength(self):
-        return self.length
+    @property
+    def length(self) -> int:
+        return self._length
 
-    def getWidth(self):
-        return self.width
+    @length.setter
+    def length(self, length: int) -> None:
+        self._length = length
 
-    def getInitialElementValue(self):
-        return self.initial_element_value
+    @property
+    def width(self) -> int:
+        return self._width
 
-    @staticmethod
-    def getMinHorizontalBoundary():
+    @width.setter
+    def width(self, width: int) -> None:
+        self._width = width
+
+    @property
+    def initial_value(self) -> None:
+        return self._initial_value
+    
+    @property
+    def is_initialized(self) -> bool:
+        return self._is_initialized
+
+    @is_initialized.setter
+    def is_initialized(self, is_intialized: bool) -> None:
+        self._is_initialized = is_intialized
+
+    @property
+    def min_horizontal_boundary(self) -> int:
+        return self.length - self.length
+
+    @property
+    def min_vertical_boundary(self) -> int:
         return 0
 
-    @staticmethod
-    def getMinVerticalBoundary():
-        return 0
-
-    def getMaxHorizontalBoundary(self):
+    @property
+    def max_horizontal_boundary(self) -> int:
         return self.length - 1
 
-    def getMaxVerticalBoundary(self):
+    @property
+    def max_vertical_boundary(self) -> int:
         return self.width - 1
 
-    def getMinIndex(self):
-        return [self.getMinHorizontalBoundary(), self.getMinVerticalBoundary()]
-    
-    def getMaxIndex(self):
-        return [self.getMaxHorizontalBoundary(), self.getMaxVerticalBoundary()]
+    @property
+    def min_index(self) -> list[int]:
+        return [self.min_horizontal_boundary, self.min_vertical_boundary]
 
-    def getValueAtIndex(self, row_col_position: []):
-        element_at_index = 0
+    @property
+    def max_index(self) -> list[int]:
+        return [self.max_horizontal_boundary, self.max_vertical_boundary]
 
-        if self.isValidGridPosition(row_col_position):
-            element_at_index = self.grid[row_col_position[0]][row_col_position[1]]
+    def get_value_at(self, row_col_position: list[int]) -> int:
+        value_at_index = 0
 
-        return element_at_index
+        if self.is_valid_position(row_col_position):
+            value_at_index = self.grid[row_col_position[0]][row_col_position[1]]
 
-    def setValueAtIndex(self, row_col_position: [], val: int):
-        if self.isValidGridPosition(row_col_position):
-            self.grid[row_col_position[0]][row_col_position[1]] = val
+        return value_at_index
 
-    def isGridInitialized(self):
-        return self.is_initialized
+    def set_value_at(self, row_col_position: list[int], value: int) -> None:
+        if self.is_valid_position(row_col_position):
+            self.grid[row_col_position[0], row_col_position[1]] = value
 
-    def isValidGridPosition(self, row_col_position: []):
-        is_valid_gird_position = False
+    """
+    Custom Functions
+    """
+    def is_valid_dimension(self, length: int, width: int) -> bool:
+        is_valid_dimension = False
 
-        if (self.getMinHorizontalBoundary() <= row_col_position[0] <= self.getMaxHorizontalBoundary()) and \
-           (self.getMinVerticalBoundary() <= row_col_position[1] <= self.getMaxVerticalBoundary()):
-            is_valid_gird_position = True
+        if length > 0 and width > 0:
+            is_valid_dimension = True
 
-        return is_valid_gird_position
+        return is_valid_dimension
 
-    def initializeGrid(self, length: int, width: int):
+    def is_valid_position(self, row_col_position: list[int]) -> bool:
+        is_valid_position = False
+
+        if (self.min_horizontal_boundary <= row_col_position[0] <= self.max_horizontal_boundary) and \
+           (self.min_vertical_boundary <= row_col_position[1] <= self.max_vertical_boundary):
+            is_valid_position = True
+
+        return is_valid_position
+
+    def initialize(self, length: int, width: int) -> None:
         self.is_initialized = False
 
-        if length != 0 and width != 0:
-            self.length = length
-            self.width = width
+        if self.is_valid_dimension(length, width):
+            self.grid = np.full((length, width), GridValues.INITIAL_VALUE.value, dtype = int)
 
-            for row in range(length):
-                self.grid.append([])
-                for col in range(width):
-                    self.grid[row].append(self.initial_element_value)
-
+        if self.length > 0:
             self.is_initialized = True
 
-    def resetGridValues(self):
-        for row in range(self.getLength()):
-            for col in range(self.getWidth()):
-                self.grid[row][col] = self.initial_element_value
+    def gen_random_coordinate(self, num_coords: int) -> list[int]:
+        random_coords = []
+        
+        for index in range(num_coords):
+            random_coords.insert(random.randint(self.min_horizontal_boundary, 
+                                                self.max_horizontal_boundary),
+                                 random.randint(self.min_horizontal_boundary, 
+                                                self.max_horizontal_boundary))
+                
+        return random_coords
+        
+    def reset_values(self) -> None:
+        for row, row_val in enumerate(self.grid):
+            for col_val in range(row_val):
+                self.set_value_at([row, col_val], GridValues.INITIAL_VALUE.value)
 
-    def printGrid(self):
-        print('Current Grid Coordinates:', end='\n\n')
+    def print_information(self) -> None:
+        pass
 
-        for row in range(self.getLength()):
-            for col in range(self.getWidth()):
-                print('[', end='')
+    def print_coordinates(self) -> None:
+        padding = len(str(max(self.max_horizontal_boundary, self.max_vertical_boundary)))
 
-                if row < 10:
-                    print('0', end='')
+        for row, row_val in enumerate(self.grid):
+            for col_val in range(row_val):
+                print(f'[{row:0{padding}},{col_val:0{padding}}] ', end='')
+            print()
+        print()
 
-                print(str(row) + ',', end='')
-
-                if col < 10:
-                    print('0', end='')
-
-                print(str(col) + '] ', end='')
+    def print_values(self) -> None:
+        for row_enum in enumerate(self.grid):
+            for col_val in row_enum[1]:
+                print(f'{col_val} ', end='')
             print()
         print()
