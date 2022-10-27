@@ -51,12 +51,6 @@ class MinesweeperBoard(Grid):
         
         return is_mine
     
-    def add_mine(self, mine_id: int, mine_coords: list[int]) -> None:
-        self.mine_coords.insert(mine_id, mine_coords)
-
-        self.set_value_at(self.mine_coords[mine_id],
-                          self.MINE_SQUARE_VALUE)
-                
     def place_mines(self, num_mines):
         num_mines_placed = 0
 
@@ -64,15 +58,16 @@ class MinesweeperBoard(Grid):
             random_coords = self.gen_random_coordinate(2)
                 
             if self.is_not_mine(random_coords):
-                self.add_mine(num_mines_placed, random_coords)
+                self.mine_coords.append(random_coords)
+                self.set_value_at(random_coords, self.MINE_SQUARE_VALUE)
 
                 num_mines_placed += 1
 
         self.mine_coords.sort()
 
     def calc_mine_adj_values(self) -> None:
-        for mine_index, mine_coord in enumerate(self.mine_coords):
-            for coord_mod_index, coord_mod in enumerate(self.coord_mods):
+        for mine_coord in self.mine_coords:
+            for coord_mod in self.coord_mods:
                 adj_coord = [(mine_coord[0] + coord_mod[0]),
                              (mine_coord[1] + coord_mod[1])]
 
@@ -81,12 +76,12 @@ class MinesweeperBoard(Grid):
                         self.set_value_at(adj_coord, 
                                           self.get_value_at(adj_coord) + 1)
 
-    def discover_blanks(self) -> None:
+    def discover_blanks(self) -> None:        
         for row_index, row_val in enumerate(self.grid):
             for col_index, col_val in enumerate(row_val):
                 if col_val == self.initial_value:
                     self.blank_coords.append([row_index, col_index])
-                    
+        
         self.blank_coords.sort()
         
     def expose_adj_blanks(self) -> None:
@@ -97,18 +92,13 @@ class MinesweeperBoard(Grid):
         self.place_mines(self.game_mode['num_mines'])
         self.calc_mine_adj_values()
         
-    def print_mine_coords(self) -> None:
-        for index, mine_coord in enumerate(self.mine_coords):
-            print(f'[{mine_coord[0]},{mine_coord[1]}]', end='')
+    def print_coord_values(self, coords: list[list[int]]) -> None:
+        if coords:
+            print(f'{coords[0]}', end='')
             
-            if index < len(self.mine_coords) - 1:
+            if len(coords) > 1:
                 print(', ', end='')
-        print()
-        
-    def print_blank_coords(self) -> None:
-        for index, blank_coord in enumerate(self.blank_coords):
-            print(f'[{blank_coord[0]},{blank_coord[1]}]', end='')
-            
-            if index < len(self.blank_coords) - 1:
-                print(', ', end='')
-        print()
+            else:
+                print()
+                
+            self.print_coord_values(coords[1:])

@@ -130,7 +130,7 @@ class Grid:
                                                 self.max_horizontal_boundary),
                                  random.randint(self.min_horizontal_boundary, 
                                                 self.max_horizontal_boundary))
-                
+
         return random_coords
         
     def reset_values(self) -> None:

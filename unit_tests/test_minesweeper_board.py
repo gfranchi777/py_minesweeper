@@ -5,14 +5,14 @@ def main() -> None:
     game_mode = GameModes.CLASSIC
     
     board = MinesweeperBoard(game_mode)
-    print(f'Current Board Status:\n')
+    print('Current Board Status:\n')
     board.print_values()
     
-    print(f'Mine Coordinates: ', end='')
-    board.print_mine_coords()
-
-    print(f'Blank Coordinates: ', end='')
-    board.print_blank_coords()
+    print('Mine Coordinates: ', end='')
+    board.print_coord_values(board.mine_coords)
+    
+    print('Blank Coordinates: ', end='')
+    board.print_coord_values(board.blank_coords)
     
 if __name__ == '__main__':
     main()
