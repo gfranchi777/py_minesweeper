@@ -5,7 +5,7 @@ def main() -> None:
     game_mode = GameModes.CLASSIC
     
     board = MinesweeperBoard(game_mode)
-    
+
     print('Current Board Status:\n')
     board.print_values(board.grid, False)
     

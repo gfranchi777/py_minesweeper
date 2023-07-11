@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 class GameModes(Enum):
     CLASSIC = {
         "board_length": 8, 
