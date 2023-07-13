@@ -1,9 +1,0 @@
-{
-    "python.analysis.extraPaths": [
-        "${workspaceFolder}/",
-        "${workspaceFolder}/..",
-        "${workspaceFolder}/../.."
-    ],
-    "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true
-}
