@@ -1,9 +1,9 @@
 """
 Module: minesweeper_board
 """
-from game_engine.enums import CoordinateModifiers
-from game_engine.enums import GameModes
-from utils.int_grid import IntGrid
+from minesweeper.game_engine.enums import CoordinateModifiers
+from minesweeper.game_engine.enums import GameModes
+from python_utils.math_utils.grid.int_grid import IntGrid
 
 class MinesweeperBoard(IntGrid):
     """
@@ -88,7 +88,7 @@ class MinesweeperBoard(IntGrid):
         """
         for row_index, row_val in enumerate(self.grid):
             for col_index, col_val in enumerate(row_val):
-                if col_val == self.initial_value:
+                if col_val == self.type.value["initial_value"]:
                     self.blank_coords.append([row_index, col_index])
 
         self.blank_coords.sort()
