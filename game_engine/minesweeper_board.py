@@ -11,7 +11,7 @@ class MinesweeperBoard(IntGrid):
     """
     MINE_SQUARE_VALUE = 9
 
-    def __init__(self, game_mode: GameModes) -> None:    
+    def __init__(self, game_mode: GameModes) -> None:
         self._blanks_coords = []
         self._mine_coords = []
 
