@@ -5,9 +5,13 @@ from minesweeper.game_engine.enums import GameModes
 from minesweeper.game_engine.minesweeper_board import MinesweeperBoard
 
 def main() -> None:
-    """
-    Function: test_board
-    Parameters: None
+    """Run test cases for the MiesweeperBoard class
+    
+    Args:
+        None
+
+    Returns:
+        None
     """
     game_mode = GameModes.CLASSIC
 
