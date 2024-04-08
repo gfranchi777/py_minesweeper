@@ -28,7 +28,7 @@ class GameModes(Enum):
     HARD = {
         "board_length": 30, 
         "board_width": 16,
-        "num_mines": 20
+        "num_mines": 50
     }
 
 class CoordinateModifiers(Enum):

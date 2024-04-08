@@ -13,7 +13,7 @@ def main() -> None:
     Returns:
         None
     """
-    game_mode = GameModes.CLASSIC
+    game_mode = GameModes.EASY
 
     board = MinesweeperBoard(game_mode)
 

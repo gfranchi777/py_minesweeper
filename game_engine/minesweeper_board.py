@@ -3,7 +3,7 @@ Module: minesweeper_board
 """
 from minesweeper.game_engine.enums import CoordinateModifiers
 from minesweeper.game_engine.enums import GameModes
-from python_utils.math_utils.grid.int_grid import IntGrid
+from pyutils.math_utils.grid.int_grid import IntGrid
 
 class MinesweeperBoard(IntGrid):
     """
