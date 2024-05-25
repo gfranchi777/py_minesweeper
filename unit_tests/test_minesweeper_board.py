@@ -1,8 +1,11 @@
 """
 Module: test_minesweepe_board
 """
-from minesweeper.game_engine.enums import GameModes
-from minesweeper.game_engine.minesweeper_board import MinesweeperBoard
+from py_minesweeper.resources.enums import GameModes
+from py_minesweeper.game_engine.minesweeper_board import MinesweeperBoard
+from py_minesweeper.ui.board_frame import BoardFrame
+
+import customtkinter
 
 def main() -> None:
     """Run test cases for the MiesweeperBoard class
@@ -13,18 +16,22 @@ def main() -> None:
     Returns:
         None
     """
-    game_mode = GameModes.EASY
+    game_mode = GameModes.MEDIUM
 
     board = MinesweeperBoard(game_mode)
 
-    print('Current Board Status:\n')
-    board.print_values(board.grid, False)
+    customtkinter.set_appearance_mode("system")
+    customtkinter.set_default_color_theme("dark-blue")
 
-    print('Mines : ', end='')
-    board.print_values(board.mine_coords)
+    app = customtkinter.CTk()
+    app.geometry("400x400")
+    app.title("Minesweeper")
 
-    print('Blanks: ', end='')
-    board.print_values(board.blank_coords)
+    board_frame = BoardFrame(board=board, master=app)
+    board_frame.pack(pady=0, padx=0, fill="both", expand=True)
+
+    app.mainloop()
 
 if __name__ == '__main__':
     main()
+

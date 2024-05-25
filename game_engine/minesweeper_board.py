@@ -1,9 +1,9 @@
 """
 Module: minesweeper_board
 """
-from minesweeper.game_engine.enums import CoordinateModifiers
-from minesweeper.game_engine.enums import GameModes
-from pyutils.math_utils.grid.int_grid import IntGrid
+from py_minesweeper.resources.enums import CoordinateModifiers
+from py_minesweeper.resources.enums import GameModes
+from py_utils.math_utils.grid.int_grid import IntGrid
 
 class MinesweeperBoard(IntGrid):
     """
@@ -15,7 +15,7 @@ class MinesweeperBoard(IntGrid):
         self._blanks_coords = []
         self._mine_coords = []
 
-        super().__init__(game_mode.value['board_length'], game_mode.value['board_width'])
+        super().__init__(game_mode.value['board_height'], game_mode.value['board_length'])
 
         self.new_game(game_mode)
 
