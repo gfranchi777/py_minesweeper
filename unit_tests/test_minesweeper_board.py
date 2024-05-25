@@ -4,6 +4,8 @@ Module: test_minesweepe_board
 from py_minesweeper.resources.enums import GameModes
 from py_minesweeper.game_engine.minesweeper_board import MinesweeperBoard
 from py_minesweeper.ui.board_frame import BoardFrame
+from py_minesweeper.ui.root_window import RootWindow
+from py_minesweeper.ui.game_controls_frame import GameControlsFrame
 
 import customtkinter
 
@@ -16,21 +18,15 @@ def main() -> None:
     Returns:
         None
     """
-    game_mode = GameModes.MEDIUM
+    board = MinesweeperBoard(GameModes.CLASSIC)
 
-    board = MinesweeperBoard(game_mode)
+    root_window = RootWindow()
 
-    customtkinter.set_appearance_mode("system")
-    customtkinter.set_default_color_theme("dark-blue")
+    game_controls_frame = GameControlsFrame(master=root_window)
 
-    app = customtkinter.CTk()
-    app.geometry("400x400")
-    app.title("Minesweeper")
+    board_frame = BoardFrame(master=root_window, board=board)
 
-    board_frame = BoardFrame(board=board, master=app)
-    board_frame.pack(pady=0, padx=0, fill="both", expand=True)
-
-    app.mainloop()
+    root_window.mainloop()
 
 if __name__ == '__main__':
     main()

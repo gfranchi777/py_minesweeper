@@ -10,6 +10,8 @@ class BoardFrame(ctk.CTkFrame):
         self._button_height = 40
         self._button_width = 40
 
+        self.pack(side="top", pady=0, padx=0, fill="both")
+
         self.create_board_ui(board)
 
     def create_board_ui(self, board: MinesweeperBoard) -> None:
