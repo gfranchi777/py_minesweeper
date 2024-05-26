@@ -16,6 +16,9 @@ class GameControlsFrame(ctk.CTkFrame):
         self._new_game_button = ctk.CTkButton(self)
         self._game_timer_label = ctk.CTkLabel(self)
 
+        self._seconds = 0
+        self._after_id = None
+
         self.create_game_mode_choices()
         self.create_new_game_button()
         self.create_game_timer()
@@ -40,23 +43,30 @@ class GameControlsFrame(ctk.CTkFrame):
         self._new_game_button.grid(row=0, column=1, pady=10)
 
     def create_game_timer(self) -> None:
-        self._seconds = 0
-
         self._game_timer_label.configure(text=f"00:00")
+        self._game_timer_label.configure(font=("Courier New", 20))
 
         self._game_timer_label.grid(row=0, column=2, pady=10, padx=10, sticky="e")
 
-    def start_new_game(self):
-        self._seconds = 0
+    def start_new_game(self) -> None:
+        
+        self.reset_game_timer()
 
-        self.update_game_timer()
-
-    def update_game_timer(self):
+    def update_game_timer(self) -> None:
         self._seconds += 1
         
         mins, secs = divmod(self._seconds, 60)
         
         self._game_timer_label.configure(text=f"{mins:02}:{secs:02}")
 
-        self.after(1000, self.update_game_timer)
+        self._after_id = self.after(1000, self.update_game_timer)
 
+    def reset_game_timer(self) -> None:
+        if self._after_id:
+            self.after_cancel(self._after_id)
+        
+        self._seconds = 0
+
+        self._game_timer_label.configure(text="00:00")
+        
+        self.update_game_timer()
