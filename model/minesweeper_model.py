@@ -12,7 +12,7 @@ class MinesweeperModel(IntGrid):
         self._blanks_coords = []
         self._mine_coords = []
 
-        super().__init__(game_mode.value['board_height'], game_mode.value['board_length'])
+        super().__init__(game_mode.value['board_width'], game_mode.value['board_length'])
 
         self.new_game(game_mode)
 
@@ -89,11 +89,6 @@ class MinesweeperModel(IntGrid):
                     self.blank_coords.append([row_index, col_index])
 
         self.blank_coords.sort()
-
-    def expose_adj_blanks(self) -> None:
-        """
-        Function: expose_adj_blanks
-        """
 
     def new_game(self, game_mode: GameModes) -> None:
         """

@@ -18,7 +18,7 @@ def main() -> None:
     Returns:
         None
     """
-    board = MinesweeperModel(GameModes.CLASSIC)
+    board = MinesweeperModel(GameModes.MEDIUM)
 
     root_window = RootWindow()
 

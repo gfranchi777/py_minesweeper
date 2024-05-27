@@ -1,6 +1,3 @@
-"""
-Module: test_minesweepe_board
-"""
 from resources.enums import GameModes
 from model.minesweeper_model import MinesweeperModel
 from view.board_frame import BoardFrame
@@ -10,15 +7,7 @@ from view.game_controls_frame import GameControlsFrame
 import customtkinter
 
 def main() -> None:
-    """Run test cases for the MiesweeperBoard class
-    
-    Args:
-        None
-
-    Returns:
-        None
-    """
-    board = MinesweeperModel(GameModes.CLASSIC)
+    board = MinesweeperModel(GameModes.HARD)
 
     root_window = RootWindow()
 

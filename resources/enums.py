@@ -24,25 +24,25 @@ class GameModes(Enum):
     """
     CLASSIC = {
         "board_length": 8, 
-        "board_height": 8,
+        "board_width": 8,
         "num_mines": 9
     }
 
     EASY = {
         "board_length": 9, 
-        "board_height": 9,
+        "board_width": 9,
         "num_mines": 12
     }
 
     MEDIUM = {
         "board_length": 16, 
-        "board_height": 16,
+        "board_width": 16,
         "num_mines": 15
     }
 
     HARD = {
         "board_length": 30, 
-        "board_height": 16,
+        "board_width": 16,
         "num_mines": 50
     }
 

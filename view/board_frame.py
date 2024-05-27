@@ -2,12 +2,13 @@ from py_minesweeper.resources.enums import UiData
 from py_minesweeper.model.minesweeper_model import MinesweeperModel
 
 import customtkinter as ctk
+import time
 
 class BoardFrame(ctk.CTkFrame):
     def __init__(self, board: MinesweeperModel, master, **kwargs) -> None:
         super().__init__(master, **kwargs)
 
-        self._button_height = 40
+        self._button_length = 40
         self._button_width = 40
         
         self._board = board
@@ -19,11 +20,11 @@ class BoardFrame(ctk.CTkFrame):
         self.create_board_ui()
 
     def create_board_ui(self) -> None:
-        for row in range(self._board.length):
-            for col in range(self._board.width):
+        for row in range(self._board.width):
+            for col in range(self._board.length):
                 button = ctk.CTkButton(self)
                 button.configure(width=self._button_width)
-                button.configure(height=self._button_height)
+                button.configure(height=self._button_length)
                 button.configure(text=f"")
                 button.configure(hover=True)
                 button.configure(state="enabled")
@@ -49,11 +50,12 @@ class BoardFrame(ctk.CTkFrame):
         pass
 
     def game_over(self) -> None:
-        mid_row = int(self._board.length / 2) - 1
-        mid_col = int(self._board.width / 2)
+        mid_row = int(self._board.width / 2) - 1
+        mid_col = int(self._board.length / 2)
 
         for row in range(self._board.width):
             for col in range(self._board.length):
+                self.buttons[row][col].configure(text="")
                 self.buttons[row][col].configure(state="disabled")
                 self.buttons[row][col].configure(fg_color="#424949")
                 self.buttons[row][col].configure(text_color_disabled="#f1c40f")
