@@ -1,11 +1,8 @@
-"""
-Module: minesweeper_board
-"""
 from py_minesweeper.resources.enums import CoordinateModifiers
 from py_minesweeper.resources.enums import GameModes
 from py_utils.math_utils.grid.int_grid import IntGrid
 
-class MinesweeperBoard(IntGrid):
+class MinesweeperModel(IntGrid):
     """
     Class: MinesweeperBoard
     """

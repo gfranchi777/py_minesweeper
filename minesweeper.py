@@ -1,11 +1,11 @@
 """
 Module: test_minesweepe_board
 """
-from py_minesweeper.resources.enums import GameModes
-from py_minesweeper.model.minesweeper_model import MinesweeperModel
-from py_minesweeper.view.board_frame import BoardFrame
-from py_minesweeper.view.root_window import RootWindow
-from py_minesweeper.view.game_controls_frame import GameControlsFrame
+from resources.enums import GameModes
+from model.minesweeper_model import MinesweeperModel
+from view.board_frame import BoardFrame
+from view.root_window import RootWindow
+from view.game_controls_frame import GameControlsFrame
 
 import customtkinter
 
