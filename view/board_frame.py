@@ -31,12 +31,12 @@ class BoardFrame(ctk.CTkFrame):
                 button.configure(text=f"")
                 button.configure(hover=True)
                 button.configure(state="enabled")
-                button.configure(command=lambda b=button, r=row, c=col: self.reveal_square_value(b,r,c))
+                button.configure(command=lambda r=row, c=col: self.reveal_square_value(r,c))
                 button.grid(row=row, column=col, padx=1, pady=1)
                 
                 self.buttons[row][col] = button
 
-    def reveal_adjacent_blanks(self, coords: list[int]) -> None:
+    def reveal_adjacent_blanks(self, coords: list[list[int]]) -> None:
         if not self._board.is_valid_position(coords):
             return
 
@@ -46,32 +46,31 @@ class BoardFrame(ctk.CTkFrame):
         if self._board.get_value_at([coords[0], coords[1]]) != 0:
             return
 
-        self.disable_button(self.buttons[coords[0]][coords[1]], True)
+        self.disable_button(coords[0], coords[1], True)
 
         for cmod_x, cmod_y in self._coord_mods:
             self.reveal_adjacent_blanks([coords[0] + cmod_x, coords[1] + cmod_y])
 
-    def reveal_square_value(self, button: ctk.CTkButton, row: int, col: int) -> None:
-        button.configure(text=f"{self._board.get_value_at([row,col])}")
-        
-        match button.cget("text"):
-            case "0":
+    def reveal_square_value(self, row: int, col: int) -> None:        
+        match self._board.get_value_at([row, col]):
+            case 0:
                 self.reveal_adjacent_blanks([row, col])
-            case "9":
+            case 9:
                 self.game_over()
             case _:
-                self.disable_button(button)
+                self.buttons[row][col].configure(text=f"{self._board.get_value_at([row,col])}")
+                self.disable_button(row, col)
     
     def activate_board(self) -> None:
         pass
 
-    def disable_button(self, button: ctk.CTkButton, clear_text: bool = False) -> None:
+    def disable_button(self, row: int, col: int, clear_text: bool = False) -> None:
         if clear_text:
-            button.configure(text="")
+            self.buttons[row][col].configure(text="")
 
-        button.configure(state="disabled")
-        button.configure(fg_color="#424949")
-        button.configure(text_color_disabled="#f1c40f")
+        self.buttons[row][col].configure(state="disabled")
+        self.buttons[row][col].configure(fg_color="#424949")
+        self.buttons[row][col].configure(text_color_disabled="#f1c40f")
 
     def game_over(self) -> None:
         mid_row = int(self._board.width / 2) - 1
@@ -79,7 +78,7 @@ class BoardFrame(ctk.CTkFrame):
 
         for row in range(self._board.width):
             for col in range(self._board.length):
-                self.disable_button(self.buttons[row][col], True)
+                self.disable_button(row, col, True)
 
         self.buttons[mid_row][mid_col - 2].configure(text="G")
         self.buttons[mid_row][mid_col - 1].configure(text="A")
