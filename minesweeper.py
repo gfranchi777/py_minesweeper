@@ -7,7 +7,7 @@ from view.game_controls_frame import GameControlsFrame
 import customtkinter
 
 def main() -> None:
-    board = MinesweeperModel(GameModes.HARD)
+    board = MinesweeperModel(GameModes.CLASSIC)
 
     root_window = RootWindow()
 

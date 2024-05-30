@@ -1,4 +1,5 @@
 from py_minesweeper.resources.enums import UiData
+from py_minesweeper.resources.enums import CoordinateModifiers
 from py_minesweeper.model.minesweeper_model import MinesweeperModel
 
 import customtkinter as ctk
@@ -12,6 +13,8 @@ class BoardFrame(ctk.CTkFrame):
         self._button_width = 40
         
         self._board = board
+        
+        self._coord_mods = CoordinateModifiers.COORD_MODS.value
 
         self.buttons = [[None for _ in range(self._board.length)] for _ in range(self._board.width)]
         
@@ -33,18 +36,35 @@ class BoardFrame(ctk.CTkFrame):
                 
                 self.buttons[row][col] = button
 
-    def reveal_square_value(self, button : ctk.CTkButton, row : int, col : int) -> None:
+    def reveal_adjacent_blanks(self, coords: list[int]) -> None:
+        if not self._board.is_valid_position(coords):
+            return
+
+        if self.buttons[coords[0]][coords[1]].cget("state") == 'disabled':
+            return
+        
+        if self._board.get_value_at([coords[0], coords[1]]) != 0:
+            return
+
+        self.buttons[coords[0]][coords[1]].configure(text="")
+        self.buttons[coords[0]][coords[1]].configure(state="disabled")
+        self.buttons[coords[0]][coords[1]].configure(fg_color="#424949")
+
+        for cmod_x, cmod_y in self._coord_mods:
+            self.reveal_adjacent_blanks([coords[0] + cmod_x, coords[1] + cmod_y])
+
+    def reveal_square_value(self, button: ctk.CTkButton, row: int, col: int) -> None:
         button.configure(text=f"{self._board.get_value_at([row,col])}")
         
         match button.cget("text"):
             case "0":
-                button.configure(text="")
+                self.reveal_adjacent_blanks([row, col])
             case "9":
                 self.game_over()
-
-        button.configure(state="disabled")
-        button.configure(fg_color="#424949")
-        button.configure(text_color_disabled="#f1c40f")
+            case _:
+                button.configure(state="disabled")
+                button.configure(fg_color="#424949")
+                button.configure(text_color_disabled="#f1c40f")
     
     def activate_board(self) -> None:
         pass
