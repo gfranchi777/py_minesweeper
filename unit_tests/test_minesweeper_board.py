@@ -1,4 +1,4 @@
-"""
+'''
 Module: test_minesweeper_board
 
 This module contains a test script for the Minesweeper game. It sets up the game board,
@@ -7,7 +7,7 @@ MinesweeperModel class.
 
 Functions:
     main: Runs the test cases for the MinesweeperModel class.
-"""
+'''
 
 from py_minesweeper.resources.enums import GameModes
 from py_minesweeper.model.minesweeper_model import MinesweeperModel
@@ -16,7 +16,7 @@ from py_minesweeper.view.root_window import RootWindow
 from py_minesweeper.view.game_controls_frame import GameControlsFrame
 
 def main() -> None:
-    """
+    '''
     Run test cases for the MinesweeperModel class.
 
     This function sets up a medium game mode Minesweeper board, initializes the root window,
@@ -27,7 +27,7 @@ def main() -> None:
 
     Returns:
         None
-    """
+    '''
     board = MinesweeperModel(GameModes.MEDIUM)
 
     root_window = RootWindow()
