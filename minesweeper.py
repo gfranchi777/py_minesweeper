@@ -1,22 +1,26 @@
-from resources.enums import GameModes
-from model.minesweeper_model import MinesweeperModel
-from view.board_frame import BoardFrame
-from view.root_window import RootWindow
-from view.game_controls_frame import GameControlsFrame
+"""
+Module: minesweeper
 
-import customtkinter
+This module contains the entry point for the Minesweeper game. It initializes the 
+MinesweeperController and starts the game.
+"""
+
+from controller.controller import MinesweeperController
 
 def main() -> None:
-    board = MinesweeperModel(GameModes.CLASSIC)
+    """
+    Initialize and run the Minesweeper game.
 
-    root_window = RootWindow()
+    This function creates an instance of MinesweeperController and starts the game's main loop.
 
-    game_controls_frame = GameControlsFrame(master=root_window)
+    Args:
+        None
 
-    board_frame = BoardFrame(master=root_window, board=board)
-
-    root_window.mainloop()
+    Returns:
+        None
+    """
+    controller = MinesweeperController()
+    controller.run()
 
 if __name__ == '__main__':
     main()
-
