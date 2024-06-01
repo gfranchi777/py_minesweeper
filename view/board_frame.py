@@ -40,6 +40,19 @@ class BoardFrame(ctk.CTkFrame):
 
         self.create_board_ui()
 
+    def bind_mouse_clicks(self, left_click_handler, right_click_handler) -> None:
+        '''
+        Bind left and right mouse click events to their handlers.
+
+        Parameters:
+        left_click_handler (function): The handler function for left mouse clicks.
+        right_click_handler (function): The handler function for right mouse clicks.
+        '''
+        self.bind("<Button-1>", left_click_handler)
+        self.bind("<Button-2>", right_click_handler)
+        self.bind("<Button-3>", right_click_handler)
+
+
     def activate_button(self, button: ctk.CTkButton, row: int, col: int) -> None:
         '''
         Activate a button on the game board.

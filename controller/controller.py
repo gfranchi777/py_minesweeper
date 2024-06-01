@@ -35,26 +35,30 @@ class MinesweeperController:
         and board frame.
         '''
         self.board = MinesweeperModel(GameModes.CLASSIC)
+
         self.root_window = RootWindow()
+        self.root_window.bind_mouse_clicks(self.on_left_click, self.on_right_click)
         self.game_controls_frame = GameControlsFrame(master=self.root_window)
+        
         self.board_frame = BoardFrame(master=self.root_window, board=self.board)
 
-    def handle_right_click(self):
+    def on_right_click(self, event):
         '''
         Handles the right-click event on the Minesweeper board.
 
         This method processes the right-click action performed by the user,
         used for flagging a cell as containing a mine.
         '''
+        print("Right button clicked at", event.x, event.y)
 
-
-    def handle_left_click(self):
+    def on_left_click(self, event):
         '''
         Handles the left-click event on the Minesweeper board.
 
         This method processes the left-click action performed by the user,
         typically used for revealing a cell on the Minesweeper board.
         '''
+        print("Left button clicked at", event.x, event.y)
 
     def run(self):
         '''

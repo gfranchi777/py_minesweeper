@@ -43,6 +43,19 @@ class GameControlsFrame(ctk.CTkFrame):
         self.create_new_game_button()
         self.create_game_timer()
 
+    
+    def bind_mouse_clicks(self, left_click_handler, right_click_handler) -> None:
+        '''
+        Bind left and right mouse click events to their handlers.
+
+        Parameters:
+        left_click_handler (function): The handler function for left mouse clicks.
+        right_click_handler (function): The handler function for right mouse clicks.
+        '''
+        self.bind("<Button-1>", left_click_handler)
+        self.bind("<Button-2>", right_click_handler)
+        self.bind("<Button-3>", right_click_handler)
+
     def create_game_mode_choices(self) -> None:
         '''
         Create the game mode selection combo box.
