@@ -1,5 +1,5 @@
 '''
-Minesweeper Model Module
+Module: minesweeper_model
 
 This module defines the MinesweeperModel class, which extends the IntGrid class to manage the
 state and logic of the Minesweeper game, including mine placement, adjacent mine calculation,
@@ -8,9 +8,11 @@ and blank cell discovery.
 Classes:
     MinesweeperModel: Manages the Minesweeper game board and game logic.
 '''
+
 from py_utils.math_utils.grid.int_grid import IntGrid
-from py_minesweeper.resources.enums import CoordinateModifiers
-from py_minesweeper.resources.enums import GameModes
+
+from py_minesweeper.resources.enums import CoordinateModifiers, GameModes
+
 
 class MinesweeperModel(IntGrid):
     '''
@@ -24,6 +26,7 @@ class MinesweeperModel(IntGrid):
         _blanks_coords (list[list[int]]): Coordinates of blank cells.
         _mine_coords (list[list[int]]): Coordinates of cells containing mines.
     '''
+
     MINE_SQUARE_VALUE = 9
 
     def __init__(self, game_mode: GameModes) -> None:
@@ -37,7 +40,9 @@ class MinesweeperModel(IntGrid):
         self._blanks_coords = []
         self._mine_coords = []
 
-        super().__init__(game_mode.value['board_width'], game_mode.value['board_length'])
+        super().__init__(
+            game_mode.value["board_width"], game_mode.value["board_length"]
+        )
 
         self.new_game(game_mode)
 
@@ -114,13 +119,14 @@ class MinesweeperModel(IntGrid):
         '''
         for mine_coord in self.mine_coords:
             for coord_mod in self.coord_mods:
-                adj_coord = [(mine_coord[0] + coord_mod[0]),
-                             (mine_coord[1] + coord_mod[1])]
+                adj_coord = [
+                    (mine_coord[0] + coord_mod[0]),
+                    (mine_coord[1] + coord_mod[1]),
+                ]
 
                 if self.is_valid_position(adj_coord):
                     if self.is_not_mine(adj_coord):
-                        self.set_value_at(adj_coord,
-                                          self.get_value_at(adj_coord) + 1)
+                        self.set_value_at(adj_coord, self.get_value_at(adj_coord) + 1)
 
     def discover_blanks(self) -> None:
         '''
@@ -143,6 +149,6 @@ class MinesweeperModel(IntGrid):
             game_mode (GameModes): The mode of the game, which determines the board dimensions
                                    and number of mines.
         '''
-        self.place_mines(game_mode.value['num_mines'])
+        self.place_mines(game_mode.value["num_mines"])
         self.calc_mine_adj_values()
         self.discover_blanks()

@@ -1,5 +1,5 @@
 '''
-Enums Module
+Module: enums
 
 This module defines various enumerations used in the Minesweeper game, including coordinate
 modifiers, game modes, and UI data.

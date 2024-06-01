@@ -1,42 +1,32 @@
 '''
 Module: test_minesweeper_board
 
-This module contains a test script for the Minesweeper game. It sets up the game board,
-root window, game controls frame, and board frame to test the functionality of the 
-MinesweeperModel class.
+This module initializes a Minesweeper game with the classic game mode and prints the game board.
 
 Functions:
-    main: Runs the test cases for the MinesweeperModel class.
+    main() -> None
 '''
 
-from py_minesweeper.resources.enums import GameModes
 from py_minesweeper.model.minesweeper_model import MinesweeperModel
-from py_minesweeper.view.board_frame import BoardFrame
-from py_minesweeper.view.root_window import RootWindow
-from py_minesweeper.view.game_controls_frame import GameControlsFrame
+from py_minesweeper.resources.enums import GameModes
+
 
 def main() -> None:
     '''
-    Run test cases for the MinesweeperModel class.
+    Initializes a Minesweeper game with the classic game mode and prints the game board.
 
-    This function sets up a medium game mode Minesweeper board, initializes the root window,
-    game controls frame, and board frame, and starts the Tkinter main loop.
+    This function creates an instance of MinesweeperModel with the classic game mode and 
+    prints the initial values of the game board.
 
-    Args:
+    Parameters:
         None
 
     Returns:
         None
     '''
-    board = MinesweeperModel(GameModes.MEDIUM)
+    board = MinesweeperModel(GameModes.CLASSIC)
 
-    root_window = RootWindow()
+    board.print_values(board.grid, False)
 
-    _ = GameControlsFrame(master=root_window)
-
-    _ = BoardFrame(master=root_window, board=board)
-
-    root_window.mainloop()
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
