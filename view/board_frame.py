@@ -6,7 +6,7 @@ user interface for the Minesweeper game board using customtkinter.
 '''
 
 import customtkinter as ctk
-from py_minesweeper.resources.enums import CoordinateModifiers
+from py_minesweeper.model.enums import CoordinateModifiers
 from py_minesweeper.model.minesweeper_model import MinesweeperModel
 
 class BoardFrame(ctk.CTkFrame):
@@ -39,19 +39,6 @@ class BoardFrame(ctk.CTkFrame):
         self.pack(side="top", pady=0, padx=0, fill="both")
 
         self.create_board_ui()
-
-    def bind_mouse_clicks(self, left_click_handler, right_click_handler) -> None:
-        '''
-        Bind left and right mouse click events to their handlers.
-
-        Parameters:
-        left_click_handler (function): The handler function for left mouse clicks.
-        right_click_handler (function): The handler function for right mouse clicks.
-        '''
-        self.bind("<Button-1>", left_click_handler)
-        self.bind("<Button-2>", right_click_handler)
-        self.bind("<Button-3>", right_click_handler)
-
 
     def activate_button(self, button: ctk.CTkButton, row: int, col: int) -> None:
         '''

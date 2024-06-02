@@ -5,9 +5,46 @@ This module contains the GameControlsFrame class, which is responsible for creat
 user interface for the game controls in the Minesweeper game using customtkinter.
 '''
 
+from PIL import Image
+
 import customtkinter as ctk
 
-from py_minesweeper.resources.enums import GameModes
+class NewGameInputDialog(ctk.CTkToplevel):
+    '''
+    Custom input dialog for selecting a new game mode.
+    '''
+    def __init__(self, master=None) -> None:
+        super().__init__(master)
+        self.title("New Game Selection")
+
+        self.option_values = ["Classic", "Easy", "Medium", "Hard"]
+        self.selected_option = ctk.StringVar(value=self.option_values[0])
+
+        self.label = ctk.CTkLabel(self, text="Select Game Mode:")
+        self.label.pack(padx=20, pady=(20, 5))
+
+        self.option_menu = ctk.CTkOptionMenu(self, variable=self.selected_option, values=self.option_values)
+        self.option_menu.pack(padx=20, pady=(5, 20))
+
+        self.confirm_button = ctk.CTkButton(self, text="Confirm", command=self.on_confirm)
+        self.confirm_button.pack(padx=20, pady=(0, 20))
+
+        self.transient(master)
+        self.grab_set()
+        self.master.wait_window(self)
+        
+    def on_confirm(self):
+        '''
+        Handle the confirm button click.
+        '''
+        self.result = self.selected_option.get()
+        self.destroy()
+
+    def get_selected_option(self):
+        '''
+        Get the selected game mode option.
+        '''
+        return self.result
 
 class GameControlsFrame(ctk.CTkFrame):
     '''
@@ -27,50 +64,17 @@ class GameControlsFrame(ctk.CTkFrame):
         super().__init__(master, **kwargs)
 
         self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=0)
+        self.grid_columnconfigure(1, weight=1)
         self.grid_columnconfigure(2, weight=1)
 
         self.pack(side="top", pady=0, padx=0, fill="both")
 
-        self._game_mode_choices = ctk.CTkComboBox(self)
-        self._new_game_button = ctk.CTkButton(self)
-        self._game_timer_label = ctk.CTkLabel(self)
-
         self._seconds = 0
         self._after_id = None
 
-        self.create_game_mode_choices()
         self.create_new_game_button()
+        self.create_remaining_flag_label()
         self.create_game_timer()
-
-    
-    def bind_mouse_clicks(self, left_click_handler, right_click_handler) -> None:
-        '''
-        Bind left and right mouse click events to their handlers.
-
-        Parameters:
-        left_click_handler (function): The handler function for left mouse clicks.
-        right_click_handler (function): The handler function for right mouse clicks.
-        '''
-        self.bind("<Button-1>", left_click_handler)
-        self.bind("<Button-2>", right_click_handler)
-        self.bind("<Button-3>", right_click_handler)
-
-    def create_game_mode_choices(self) -> None:
-        '''
-        Create the game mode selection combo box.
-
-        This method initializes the combo box with the available game modes.
-        '''
-        game_modes = [mode.name.title() for mode in GameModes]
-
-        self._game_mode_choices.configure(width=100)
-        self._game_mode_choices.configure(height=10)
-        self._game_mode_choices.configure(state="readonly")
-        self._game_mode_choices.configure(values=game_modes)
-        self._game_mode_choices.set(game_modes[0])
-
-        self._game_mode_choices.grid(row=0, column=0, pady=10, padx=10, sticky="w")
 
     def create_new_game_button(self) -> None:
         '''
@@ -78,12 +82,30 @@ class GameControlsFrame(ctk.CTkFrame):
 
         This method initializes the button used to start a new game.
         '''
+        self._new_game_button = ctk.CTkButton(self)
         self._new_game_button.configure(width=5)
         self._new_game_button.configure(height=10)
         self._new_game_button.configure(text="New Game")
         self._new_game_button.configure(command=self.start_new_game)
 
-        self._new_game_button.grid(row=0, column=1, pady=10)
+        self._new_game_button.grid(row=0, column=0, pady=10, padx=10, sticky="w")
+
+    def create_remaining_flag_label(self) -> None:
+        '''
+        a
+        '''
+        flag_image = ctk.CTkImage(
+            light_image=Image.open("./resources/images/bomb.png"),
+            dark_image=Image.open("./resources/images/bomb.png"),
+            size=(50, 50))
+
+        self._remaining_flag_label = ctk.CTkLabel(self)
+        self._remaining_flag_label.configure(image=flag_image)
+        self._remaining_flag_label.configure(text="= ?")
+        self._remaining_flag_label.configure(compound="left")
+        self._remaining_flag_label.configure(font=("Courier New", 20))
+
+        self._remaining_flag_label.grid(row=0, column=1, pady=10, padx=0)
 
     def create_game_timer(self) -> None:
         '''
@@ -91,6 +113,7 @@ class GameControlsFrame(ctk.CTkFrame):
 
         This method initializes the label used to display the game timer.
         '''
+        self._game_timer_label = ctk.CTkLabel(self)
         self._game_timer_label.configure(text="00:00")
         self._game_timer_label.configure(font=("Courier New", 20))
 
@@ -102,7 +125,18 @@ class GameControlsFrame(ctk.CTkFrame):
 
         This method resets the game timer and prepares the game for a new session.
         '''
+        dialog = NewGameInputDialog(master=self)
+        self.wait_window(dialog)
+        selected_option = dialog.get_selected_option()
+        print(f"Selected Option: {selected_option}")
+
         self.reset_game_timer()
+
+    def update_flag_label(self, remaining_flags) -> None:
+        '''
+        a
+        '''
+        self._remaining_flag_label.configure(text=f" = {remaining_flags}")
 
     def update_game_timer(self) -> None:
         '''

@@ -8,12 +8,13 @@ handles user interactions, and starts the main application loop.
 Attributes:
     None
 '''
+import platform
 
 from py_minesweeper.model.minesweeper_model import MinesweeperModel
 from py_minesweeper.view.board_frame import BoardFrame
 from py_minesweeper.view.root_window import RootWindow
 from py_minesweeper.view.game_controls_frame import GameControlsFrame
-from py_minesweeper.resources.enums import GameModes
+from py_minesweeper.model.enums import GameModes
 
 class MinesweeperController:
     '''
@@ -37,10 +38,21 @@ class MinesweeperController:
         self.board = MinesweeperModel(GameModes.CLASSIC)
 
         self.root_window = RootWindow()
-        self.root_window.bind_mouse_clicks(self.on_left_click, self.on_right_click)
         self.game_controls_frame = GameControlsFrame(master=self.root_window)
-        
         self.board_frame = BoardFrame(master=self.root_window, board=self.board)
+
+        self.bind_mouse_clicks()
+
+    def bind_mouse_clicks(self) -> None:
+        '''
+        Bind mouse click events to their respective handlers based on the operating system.
+        '''
+        self.root_window.bind("<Button-1>", self.on_left_click)
+
+        if platform.system() == "Darwin":
+            self.root_window.bind("<Button-2>", self.on_right_click)
+        else:
+            self.root_window.bind("<Button-3>", self.on_right_click)
 
     def on_right_click(self, event):
         '''
@@ -49,7 +61,6 @@ class MinesweeperController:
         This method processes the right-click action performed by the user,
         used for flagging a cell as containing a mine.
         '''
-        print("Right button clicked at", event.x, event.y)
 
     def on_left_click(self, event):
         '''
@@ -58,7 +69,6 @@ class MinesweeperController:
         This method processes the left-click action performed by the user,
         typically used for revealing a cell on the Minesweeper board.
         '''
-        print("Left button clicked at", event.x, event.y)
 
     def run(self):
         '''

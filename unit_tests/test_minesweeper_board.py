@@ -8,7 +8,7 @@ Functions:
 '''
 
 from py_minesweeper.model.minesweeper_model import MinesweeperModel
-from py_minesweeper.resources.enums import GameModes
+from py_minesweeper.model.enums import GameModes
 
 
 def main() -> None:

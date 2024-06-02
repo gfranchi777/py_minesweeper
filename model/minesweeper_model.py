@@ -11,7 +11,7 @@ Classes:
 
 from py_utils.math_utils.grid.int_grid import IntGrid
 
-from py_minesweeper.resources.enums import CoordinateModifiers, GameModes
+from py_minesweeper.model.enums import CoordinateModifiers, GameModes
 
 
 class MinesweeperModel(IntGrid):
@@ -46,6 +46,18 @@ class MinesweeperModel(IntGrid):
 
         self.new_game(game_mode)
 
+    @property
+    def is_new_game(self) -> bool:
+        '''
+        Flag used to see if we have already started playing.
+
+        This flag will be used to control the timer.
+
+        Returns:
+            bool: True if no squares clicked, False otherwise.
+        '''
+        return self._is_new_game
+    
     @property
     def mine_coords(self) -> list[list[int]]:
         '''
@@ -149,6 +161,7 @@ class MinesweeperModel(IntGrid):
             game_mode (GameModes): The mode of the game, which determines the board dimensions
                                    and number of mines.
         '''
+        self._is_new_game = True
         self.place_mines(game_mode.value["num_mines"])
         self.calc_mine_adj_values()
         self.discover_blanks()
