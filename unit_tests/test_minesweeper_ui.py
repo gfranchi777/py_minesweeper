@@ -29,7 +29,6 @@ def main() -> None:
         for col in range(controller.board.length):
             controller.board_frame.buttons[row][col].configure(
                 text=f"{controller.board.get_value_at([row, col])}")
-
     controller.run()
 
 if __name__ == "__main__":

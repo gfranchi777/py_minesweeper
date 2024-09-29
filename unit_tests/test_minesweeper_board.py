@@ -10,7 +10,6 @@ Functions:
 from py_minesweeper.model.minesweeper_model import MinesweeperModel
 from py_minesweeper.model.enums import GameModes
 
-
 def main() -> None:
     '''
     Initializes a Minesweeper game with the classic game mode and prints the game board.

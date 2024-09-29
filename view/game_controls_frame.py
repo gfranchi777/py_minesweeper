@@ -15,6 +15,7 @@ class NewGameInputDialog(ctk.CTkToplevel):
     '''
     def __init__(self, master=None) -> None:
         super().__init__(master)
+        
         self.title("New Game Selection")
 
         self.option_values = ["Classic", "Easy", "Medium", "Hard"]
@@ -32,7 +33,10 @@ class NewGameInputDialog(ctk.CTkToplevel):
         self.transient(master)
         self.grab_set()
         self.master.wait_window(self)
-        
+
+        self.result: str = ""
+
+
     def on_confirm(self):
         '''
         Handle the confirm button click.
@@ -95,8 +99,8 @@ class GameControlsFrame(ctk.CTkFrame):
         a
         '''
         flag_image = ctk.CTkImage(
-            light_image=Image.open("./resources/images/bomb.png"),
-            dark_image=Image.open("./resources/images/bomb.png"),
+            light_image=Image.open("./py_minesweeper/resources/images/bomb.png"),
+            dark_image=Image.open("./py_minesweeper/resources/images/bomb.png"),
             size=(50, 50))
 
         self._remaining_flag_label = ctk.CTkLabel(self)
