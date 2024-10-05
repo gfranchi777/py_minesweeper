@@ -1,4 +1,4 @@
-'''
+"""
 Module: minesweeper_model
 
 This module defines the MinesweeperModel class, which extends the IntGrid class to manage the
@@ -7,7 +7,7 @@ and blank cell discovery.
 
 Classes:
     MinesweeperModel: Manages the Minesweeper game board and game logic.
-'''
+"""
 
 from py_utils.math_utils.grid.int_grid import IntGrid
 
@@ -15,7 +15,7 @@ from py_minesweeper.model.enums import CoordinateModifiers, GameModes
 
 
 class MinesweeperModel(IntGrid):
-    '''
+    """
     MinesweeperModel manages the Minesweeper game board and game logic.
 
     This class handles the initialization of the game board, placing of mines, calculation
@@ -25,18 +25,18 @@ class MinesweeperModel(IntGrid):
         MINE_SQUARE_VALUE (int): The value representing a mine in the game grid.
         _blanks_coords (list[list[int]]): Coordinates of blank cells.
         _mine_coords (list[list[int]]): Coordinates of cells containing mines.
-    '''
+    """
 
     MINE_SQUARE_VALUE = 9
 
     def __init__(self, game_mode: GameModes) -> None:
-        '''
+        """
         Initializes the MinesweeperModel with the specified game mode.
 
         Args:
             game_mode (GameModes): The mode of the game, which determines the board dimensions
                                    and number of mines.
-        '''
+        """
         self._blanks_coords = []
         self._mine_coords = []
 
@@ -48,48 +48,48 @@ class MinesweeperModel(IntGrid):
 
     @property
     def is_new_game(self) -> bool:
-        '''
+        """
         Flag used to see if we have already started playing.
 
         This flag will be used to control the timer.
 
         Returns:
             bool: True if no squares clicked, False otherwise.
-        '''
+        """
         return self._is_new_game
-    
+
     @property
     def mine_coords(self) -> list[list[int]]:
-        '''
+        """
         Gets the coordinates of the mines on the board.
 
         Returns:
             list[list[int]]: A list of coordinates where mines are located.
-        '''
+        """
         return self._mine_coords
 
     @property
     def blank_coords(self) -> list[list[int]]:
-        '''
+        """
         Gets the coordinates of the blank cells on the board.
 
         Returns:
             list[list[int]]: A list of coordinates where blank cells are located.
-        '''
+        """
         return self._blanks_coords
 
     @property
     def coord_mods(self) -> list[list[int]]:
-        '''
+        """
         Gets the coordinate modifiers for adjacent cells.
 
         Returns:
             list[list[int]]: A list of coordinate modifications for adjacent cells.
-        '''
+        """
         return CoordinateModifiers.COORD_MODS.value
 
     def is_not_mine(self, coords: list[int]) -> bool:
-        '''
+        """
         Checks if the cell at the given coordinates is not a mine.
 
         Args:
@@ -97,7 +97,7 @@ class MinesweeperModel(IntGrid):
 
         Returns:
             bool: True if the cell is not a mine, False otherwise.
-        '''
+        """
         is_mine = True
 
         if self.get_value_at(coords) == self.MINE_SQUARE_VALUE:
@@ -106,12 +106,12 @@ class MinesweeperModel(IntGrid):
         return is_mine
 
     def place_mines(self, num_mines) -> None:
-        '''
+        """
         Places the specified number of mines randomly on the board.
 
         Args:
             num_mines (int): The number of mines to place on the board.
-        '''
+        """
         num_mines_placed = 0
 
         while num_mines_placed != num_mines:
@@ -126,9 +126,9 @@ class MinesweeperModel(IntGrid):
         self.mine_coords.sort()
 
     def calc_mine_adj_values(self) -> None:
-        '''
+        """
         Calculates the number of adjacent mines for each cell and updates the board accordingly.
-        '''
+        """
         for mine_coord in self.mine_coords:
             for coord_mod in self.coord_mods:
                 adj_coord = [
@@ -138,12 +138,14 @@ class MinesweeperModel(IntGrid):
 
                 if self.is_valid_position(adj_coord):
                     if self.is_not_mine(adj_coord):
-                        self.set_value_at(adj_coord, self.get_value_at(adj_coord) + 1)
+                        self.set_value_at(
+                            adj_coord, self.get_value_at(adj_coord) + 1
+                        )
 
     def discover_blanks(self) -> None:
-        '''
+        """
         Discovers and records the coordinates of all blank cells on the board.
-        '''
+        """
         for row_index, row_val in enumerate(self.grid):
             for col_index, col_val in enumerate(row_val):
                 if col_val == self.type.value["initial_value"]:
@@ -152,7 +154,7 @@ class MinesweeperModel(IntGrid):
         self.blank_coords.sort()
 
     def new_game(self, game_mode: GameModes) -> None:
-        '''
+        """
         Initializes a new game with the specified game mode.
 
         This method places mines, calculates adjacent mine values, and discovers blank cells.
@@ -160,7 +162,7 @@ class MinesweeperModel(IntGrid):
         Args:
             game_mode (GameModes): The mode of the game, which determines the board dimensions
                                    and number of mines.
-        '''
+        """
         self._is_new_game = True
         self.place_mines(game_mode.value["num_mines"])
         self.calc_mine_adj_values()
